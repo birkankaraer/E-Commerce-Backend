@@ -18,8 +18,8 @@ namespace DataAccess.Concrete.EntityFramework
             //IDisposable pattern implementation of C#
             using (NorthwindContext context = new NorthwindContext())
             {
-                var deletedEntity = context.Entry(entity);
-                deletedEntity.State = EntityState.Deleted;
+                var addedEntity = context.Entry(entity);
+                addedEntity.State = EntityState.Added;
                 context.SaveChanges();
             }
         }
@@ -28,8 +28,8 @@ namespace DataAccess.Concrete.EntityFramework
         {
             using (NorthwindContext context = new NorthwindContext())
             {
-                var addedEntity = context.Entry(entity);
-                addedEntity.State = EntityState.Added;
+                var deletedEntity = context.Entry(entity);
+                deletedEntity.State = EntityState.Deleted;
                 context.SaveChanges();
             }
         }
