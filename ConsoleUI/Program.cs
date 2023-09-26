@@ -9,9 +9,19 @@ internal class Program
     //Open Closed Principle
     private static void Main(string[] args)
     {
-        ProductTest();
+        //ProductTest();
         //CategoryTest();
+        ProductManager productManager = new ProductManager(new EfProductDal());
 
+        var result = productManager.GetProductDetails();
+        if (result.Success==true)
+        {
+            foreach (var product in result.Data)
+            {
+                Console.WriteLine(product.ProductName + "/" + product.CategoryName);
+            }
+        }
+        else { Console.WriteLine(result.Message); }
     }
 
     private static void CategoryTest()
@@ -26,7 +36,7 @@ internal class Program
     private static void ProductTest()
     {
         ProductManager productManager = new ProductManager(new EfProductDal());
-        foreach (var product in productManager.GetProductDetails())
+        foreach (var product in productManager.GetProductDetails().Data)
         {
             Console.WriteLine(product.ProductName+"/"+product.CategoryName);
         }
