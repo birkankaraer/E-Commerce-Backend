@@ -17,6 +17,10 @@ namespace Business.Concrete
     {
         IProductDal _productDal;
 
+        public ProductManager()
+        {
+        }
+
         public ProductManager(IProductDal productDal)
         {
             _productDal = productDal;
@@ -41,7 +45,7 @@ namespace Business.Concrete
             }
             //İş kodları
             //Yetkisi var mı ?
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll(),Messages.ProductListed);
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(),Messages.ProductsListed);
         }
 
         public IDataResult<List<Product>> GetAllByCategoryId(int id)

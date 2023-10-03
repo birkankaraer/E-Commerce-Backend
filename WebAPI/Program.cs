@@ -1,4 +1,9 @@
 
+using Business.Abstract;
+using Business.Concrete;
+using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
+
 namespace WebAPI
 {
     public class Program
@@ -14,6 +19,10 @@ namespace WebAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddControllers();
+            builder.Services.AddSingleton<IProductService, ProductManager>();
+            builder.Services.AddSingleton<IProductDal, EfProductDal>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -26,7 +35,6 @@ namespace WebAPI
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
