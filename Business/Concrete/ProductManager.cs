@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.CCS;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -20,16 +21,17 @@ namespace Business.Concrete
     public class ProductManager : IProductService
     {
         IProductDal _productDal;
+        //ILogger _logger; //Dependency Injection
 
-        public ProductManager(IProductDal productDal)
+        public ProductManager(IProductDal productDal/*ILogger logger*/)//Dependency Injection ,Ctora diyoruz ki ben bir Product Manager olarak loggera ihtiyaç duyuyorum.Bu file logger olabilir db logger olabilir.
         {
             _productDal = productDal;
+            //_logger = logger;
         }
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
-            //business rules codes
-            //validation
+
             _productDal.Add(product);
             return new SuccessResult(Messages.ProductAdded);
         }
@@ -42,23 +44,23 @@ namespace Business.Concrete
 
         public IDataResult<List<Product>> GetAll()
         {
-            if (DateTime.Now.Hour==10)
+            if (DateTime.Now.Hour == 10)
             {
                 return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
             }
             //İş kodları
             //Yetkisi var mı ?
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll(),Messages.ProductsListed);
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductsListed);
         }
 
         public IDataResult<List<Product>> GetAllByCategoryId(int id)
         {
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p=>p.CategoryId == id));
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == id));
         }
 
         public IDataResult<Product> GetById(int ProductId)
         {
-            return new SuccessDataResult<Product>(_productDal.Get(p=>p.ProductId == ProductId));
+            return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == ProductId));
         }
 
         public IDataResult<List<Product>> GetByUnitPrice(decimal min, decimal max)

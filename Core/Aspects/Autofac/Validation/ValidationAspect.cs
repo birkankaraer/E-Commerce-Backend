@@ -10,9 +10,12 @@ using System.Threading.Tasks;
 
 namespace Core.Aspects.Autofac.Validation
 {
-    public class ValidationAspect : MethodInterception
+    public class ValidationAspect : MethodInterception //Aspect : Methodun başında, sonunda hata verdiğinde çalışacak yapı.
+                                                       //Ben neresinde çalışmak istersem orada çalıştırırım mesela Onbefore.
+                                                       //Ancak burada validation olduğu için doğrulama olduğu için yani doğrulama 
+                                                       //methodun başında yapılır ve ben burda onbefore methodunu yazıyorum.
     {
-        private Type _validatorType;
+        private Type _validatorType; //Attribute leri typlera ctor ile atarız
         public ValidationAspect(Type validatorType)
         {
             if (!typeof(IValidator).IsAssignableFrom(validatorType))
