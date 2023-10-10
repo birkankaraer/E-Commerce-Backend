@@ -4,6 +4,7 @@ using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.InMemory;
@@ -21,25 +22,27 @@ namespace Business.Concrete
     public class ProductManager : IProductService
     {
         IProductDal _productDal;
+        ICategoryService _categoryService;
         //ILogger _logger; //Dependency Injection
 
-        public ProductManager(IProductDal productDal/*ILogger logger*/)//Dependency Injection ,Ctora diyoruz ki ben bir Product Manager olarak loggera ihtiyaç duyuyorum.Bu file logger olabilir db logger olabilir.
+        public ProductManager(IProductDal productDal, ICategoryService categoryService)
         {
             _productDal = productDal;
-            //_logger = logger;
+            _categoryService = categoryService;
         }
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
-            if (CheckIfProductCountOfCategoryCorrect(product.CategoryId).Success)
+            IResult result = BusinessRules.Run(CheckIfProductNameExists(product.ProductName),
+                CheckIfProductCountOfCategoryCorrect(product.CategoryId),CheckIfCategoryLimitExceeded());
+
+            if (result != null)
             {
-                if(CheckIfProductNameExists(product.ProductName).Success)
-                {
-                    _productDal.Add(product);
-                    return new SuccessResult(Messages.ProductAdded);
-                }           
+                return result;
             }
-            return new ErrorResult();
+
+            _productDal.Add(product);
+            return new SuccessResult(Messages.ProductAdded);
 
         }
 
@@ -82,7 +85,7 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Update(Product product)
         {
-            if(CheckIfProductCountOfCategoryCorrect(product.CategoryId).Success)
+            if (CheckIfProductCountOfCategoryCorrect(product.CategoryId).Success)
             {
                 _productDal.Update(product);
                 return new SuccessResult(Messages.ProductUpdated);
@@ -101,10 +104,19 @@ namespace Business.Concrete
         }
         private IResult CheckIfProductNameExists(string productName)
         {
-            var result = _productDal.GetAll(p=>p.ProductName == productName).Any();
-            if(result)
+            var result = _productDal.GetAll(p => p.ProductName == productName).Any();
+            if (result)
             {
                 return new ErrorResult(Messages.ProductNameAlreadyExsists);
+            }
+            return new SuccessResult();
+        }
+        private IResult CheckIfCategoryLimitExceeded()
+        {
+            var result = _categoryService.GetAll();
+            if (result.Data.Count>15)
+            {
+                return new ErrorResult(Messages.CategoryLimitExceeded);
             }
             return new SuccessResult();
         }
