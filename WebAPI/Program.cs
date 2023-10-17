@@ -41,7 +41,7 @@ namespace WebAPI
                 .ConfigureContainer<ContainerBuilder>(builder =>
                 { builder.RegisterModule(new AutofacBusinessModule()); });
 
-            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            
             var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -58,7 +58,7 @@ namespace WebAPI
                         IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                     };
                 });
-            ServiceTool.Create(builder.Services);
+            //services.AddDependencyResolvers(); ->burada kaldým 18.10.2023 00.16
 
             var app = builder.Build();
 
