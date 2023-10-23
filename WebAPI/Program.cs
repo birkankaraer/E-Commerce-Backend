@@ -44,7 +44,8 @@ namespace WebAPI
                 .ConfigureContainer<ContainerBuilder>(builder =>
                 { builder.RegisterModule(new AutofacBusinessModule()); });
 
-            
+            builder.Services.AddCors();
+
             var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -76,6 +77,8 @@ namespace WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseCors(builder=>builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
 
             app.UseHttpsRedirection();
 
