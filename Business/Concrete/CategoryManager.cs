@@ -28,7 +28,7 @@ namespace Business.Concrete
         //SQL -> SELECT * FROM Categories WHERE CategoryId = 3;
         public IDataResult<Category> GetById(int categoryId)
         {
-            return new SuccessDataResult<Category>(_categoryDal.Get(c => c.CategoryID == categoryId));
+            return new SuccessDataResult<Category>(_categoryDal.Get(c => c.CategoryId == categoryId));
         }
     }
 }
