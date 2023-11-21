@@ -11,17 +11,21 @@ internal class Program
     {
         //ProductTest();
         //CategoryTest();
-        ProductManager productManager = new ProductManager(new EfProductDal(), new CategoryManager(new EfCategoryDal()));
+        //ProductManager productManager = new ProductManager(new EfProductDal(), new CategoryManager(new EfCategoryDal()));
 
-        var result = productManager.GetProductDetails();
-        if (result.Success==true)
-        {
-            foreach (var product in result.Data)
-            {
-                Console.WriteLine(product.ProductName + "/" + product.CategoryName);
-            }
-        }
-        else { Console.WriteLine(result.Message); }
+        //var result = productManager.GetProductDetails();
+        //if (result.Success==true)
+        //{
+        //    foreach (var product in result.Data)
+        //    {
+        //        Console.WriteLine(product.ProductName + "/" + product.CategoryName);
+        //    }
+        //}
+        //else { Console.WriteLine(result.Message); }
+
+        //FizzBuzzer();
+        //FakHesap();
+
     }
 
     private static void CategoryTest()
@@ -39,6 +43,49 @@ internal class Program
         foreach (var product in productManager.GetProductDetails().Data)
         {
             Console.WriteLine(product.ProductName+"/"+product.CategoryName);
+        }
+    }
+
+    public static void FizzBuzzer()
+    {
+        for(int i = 0; i <=100; i++)
+        {
+            if(i % 3 == 0 && i % 5 == 0)
+            {
+                Console.WriteLine("FizzBuzz");
+            }
+            else if(i % 3 == 0)
+            {
+                Console.WriteLine("Fizz");
+            }
+            else if(i % 5 == 0)
+            {
+                Console.WriteLine("Buzz");
+            }
+            else
+            {
+                Console.WriteLine(i);
+            }
+        }
+    } 
+    public static void FakHesap()
+    {
+        int sayi = 5;
+        long fak = fakHesapla(sayi);
+
+        Console.WriteLine($"{sayi} sayısının faktöriyeli: {fak}");
+
+
+    }
+    static long fakHesapla(int n)
+    {
+        if(n == 0|| n == 1)
+        {
+            return 1;
+        }
+        else
+        {
+            return n * fakHesapla(n - 1);
         }
     }
 }
