@@ -33,8 +33,8 @@ namespace Business.Concrete
             _categoryService = categoryService;
         }
         //[SecuredOperation("product.add, admin")]
-        //[ValidationAspect(typeof(ProductValidator))]
         //[CacheRemoveAspect("IProductService.Get")]
+        [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
             IResult result = BusinessRules.Run(CheckIfProductNameExists(product.ProductName),
