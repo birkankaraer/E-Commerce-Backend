@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Abstract;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace Entities.DTOs
         public string ProductName { get; set; }
         public string CategoryName { get; set; }
         public int UnitsInStock { get; set; }
+        public List<ProductImage> ProductImages { get; set; }
     }
 }

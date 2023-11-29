@@ -34,8 +34,11 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<AuthManager>().As<IAuthService>();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 
+            builder.RegisterType<ProductImageManager>().As<IProductImageService>().SingleInstance();
+            builder.RegisterType<EfProductImageDal>().As<IProductImageDal>().SingleInstance();
+
             //builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().SingleInstance();
-            
+
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()

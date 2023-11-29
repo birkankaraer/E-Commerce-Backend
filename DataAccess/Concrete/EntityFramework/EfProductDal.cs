@@ -27,7 +27,8 @@ namespace DataAccess.Concrete.EntityFramework
                                  ProductId = p.ProductId, 
                                  ProductName = p.ProductName,
                                  CategoryName = c.CategoryName,
-                                 UnitsInStock = p.UnitsInStock, 
+                                 UnitsInStock = p.UnitsInStock,
+                                 ProductImages = context.ProductImages.Where(pi => pi.ProductId == p.ProductId).ToList(),
                              };
                 return result.ToList();
             }

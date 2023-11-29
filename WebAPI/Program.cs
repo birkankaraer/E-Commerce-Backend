@@ -30,6 +30,7 @@ namespace WebAPI
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddCors();
 
             builder.Services.AddControllers();
             //builder.Services.AddSingleton<IProductService, ProductManager>();
@@ -79,6 +80,8 @@ namespace WebAPI
             }
 
             app.ConfigureCustomExceptionMiddleware();
+
+            app.UseStaticFiles();
 
             app.UseCors(builder=>builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
 
